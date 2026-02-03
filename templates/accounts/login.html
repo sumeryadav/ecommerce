@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load static %}
+{% load socialaccount %}
+{% block body_class %}no-navbar{% endblock %}
+{% block content %}
+
+<div class="d-flex justify-content-center align-items-center" style="min-height:85vh">
+  <div class="card shadow p-4" style="width:360px">
+
+    <h4 class="text-center mb-3">Login</h4>
+
+    <!-- Logo -->
+    <div class="text-center mb-4">
+      <img src="{% static 'store/images/fashionam-logo.png' %}" alt="Fashionam Logo" style="height:60px">
+    </div>
+
+    <!-- Django messages -->
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+
+    <!-- Login form -->
+    <form method="post">
+      {% csrf_token %}
+
+      <div class="form-floating mb-3">
+        <input type="text" name="username" class="form-control" placeholder="Username" required>
+        <label>Username</label>
+      </div>
+
+      <div class="form-floating mb-3 position-relative">
+        <input type="password" name="password" id="password" class="form-control" placeholder="Password" required>
+        <label>Password</label>
+
+        <i class="bi bi-eye position-absolute top-50 end-0 translate-middle-y me-3" style="cursor:pointer"
+          onclick="togglePassword()"></i>
+      </div>
+
+      <button type="submit" class="btn btn-dark w-100">
+        Login
+      </button>
+    </form>
+
+    <!-- OR -->
+    <div class="text-center my-3 text-muted">OR</div>
+    <a href="{% provider_login_url 'google' %}" class="google-login-btn mt-2">
+      <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google">
+      <span>Continue with Google</span>
+    </a>
+
+
+    <!-- Signup -->
+    <p class="text-center mt-3 mb-0">
+      Don’t have an account?
+      <a href="{% url 'signup' %}">Signup</a>
+    </p>
+
+  </div>
+</div>
+
+<!-- Password toggle script -->
+<script>
+  function togglePassword() {
+    const pwd = document.getElementById("password");
+    pwd.type = pwd.type === "password" ? "text" : "password";
+  }
+</script>
+{% endblock %}

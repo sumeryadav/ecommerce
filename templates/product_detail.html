@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container product-detail-container">
+    <div class="row justify-content-center">
+        <div class="col-md-5 text-center">
+            <div class="product-3d-wrapper">
+                <img src="{{ product.image.url }}"
+                     class="img-fluid product-detail-img">
+            </div>
+        </div>
+
+        <div class="col-md-5">
+            <h2 class="fw-bold">{{ product.name }}</h2>
+            <h4 class="text-success mb-3">₹{{ product.price }}</h4>
+
+            <p class="text-muted">
+                {{ product.description }}
+            </p>
+
+            <a href="{% url 'cart' %}?product={{ product.id }}"
+               class="btn btn-dark mt-3">
+               Add to Cart
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

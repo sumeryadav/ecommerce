@@ -1,45 +1,170 @@
 {% extends 'base.html' %}
 {% load static %}
+
 {% block content %}
 
 
-<h2 class="text-center mb-4 fw-bold">Our Products</h2>
+<!-- ================= HERO SECTION ================= -->
+<section class="bg-dark text-white text-center py-5 mb-5">
+    <div class="container">
+        <h1 class="fw-bold display-5">Welcome to Fashionam</h1>
+        <p class="lead">Discover premium fashion at the best prices</p>
+        <a href="#products" class="btn btn-light mt-3">Shop Now</a>
+    </div>
+</section>
 
-<div class="row g-4">
 
-    {% for product in products %}
-    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+<!-- ================= HERO SLIDER ================= -->
+<!-- ================= HERO SLIDER ================= -->
 
-        <div class="card h-100 shadow-sm border-0">
+<div class="swiper heroSwiper mb-5">
+    <div class="swiper-wrapper">
 
-            <img src="{{ product.image.url }}"
-                 class="card-img-top"
-                 alt="{{ product.name }}"
-                 style="height:220px; object-fit:cover;">
+        <div class="swiper-slide">
+            <img src="{% static 'store/images/banner1.jpg' %}">
+        </div>
 
-            <div class="card-body text-center">
-                <h6 class="fw-semibold">{{ product.name }}</h6>
-                <p class="text-muted small mb-2">
-                    ₹ {{ product.price }}
-                </p>
-                   <a href="{% url 'product_detail' product.id %}"
-                     class="btn btn-dark btn-sm w-100 mb-2">
-                       View
-                    </a>
+        <div class="swiper-slide">
+            <img src="{% static 'store/images/banner2.jpg' %}">
+        </div>
 
-                   <a href="{% url 'add_to_cart' product.id %}"
-                   class="btn btn-outline-secondary mt-2 btn-sm w-100">
-                    Add to Cart
-                </a>
-            </div>
-
+        <div class="swiper-slide">
+            <img src="{% static 'store/images/banner3.jpg' %}">
         </div>
 
     </div>
-    {% empty %}
-    <p class="text-center text-muted">No products available</p>
-    {% endfor %}
+</div>
+
+
+<!-- ================= PRODUCTS (YOUR ORIGINAL CODE) ================= -->
+<section id="products" class="container mb-5">
+
+    <h2 class="text-center mb-4 fw-bold">Our Products</h2>
+
+    <div class="row g-4">
+
+        {% for product in products %}
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+
+            <div class="card product-card shadow-sm border-0">
+
+
+                <div class="position-relative">
+
+                    <img src="{{ product.image.url }}" class="card-img-top" style="height:220px; object-fit:cover;">
+
+
+
+
+                </div>
+
+                <!-- 🔥 THIS IS WHERE WE CHANGED -->
+                <div class="card-body text-center d-flex flex-column">
+
+                    <h6 class="fw-semibold mb-1">{{ product.name }}</h6>
+
+                    <p class="text-muted small mb-3">
+                        ₹ {{ product.price }}
+                    </p>
+
+                    <div class="mt-auto d-grid gap-2">
+                        <a href="{% url 'product_detail' product.id %}" class="btn btn-dark btn-sm">View</a>
+
+                        <a href="{% url 'add_to_cart' product.id %}" class="btn btn-outline-secondary btn-sm">Add to
+                            Cart</a>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+        {% endfor %}
+
+
+
+    </div>
+
+</section>
+
+<!-- ================= AUTO PRODUCT CAROUSEL ================= -->
+
+<h3 class="text-center fw-bold mt-5 mb-4">Trending Now 🔥</h3>
+
+<div id="productCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="2000">
+
+    <div class="carousel-inner">
+
+        {% for product in products %}
+        {% if forloop.counter0|divisibleby:4 %}
+        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+            <div class="row g-3">
+                {% endif %}
+
+                <div class="col-md-3">
+                    <div class="card shadow-sm h-100">
+                        <img src="{{ product.image.url }}" style="height:180px; object-fit:cover;">
+                        <div class="card-body text-center small">
+                            {{ product.name }}
+                        </div>
+                    </div>
+                </div>
+
+                {% if forloop.counter|divisibleby:4 or forloop.last %}
+            </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+
+    </div>
 
 </div>
 
-{% endblock %}
+
+<!-- ================= BANNER SECTION ================= -->
+<section class="bg-light text-center py-5">
+    <div class="container">
+        <h3 class="fw-bold">🔥 Trending Styles</h3>
+        <p>Handpicked collections just for you</p>
+    </div>
+</section>
+
+
+
+<!-- ================= SECOND PRODUCT GRID (optional but makes page long) ================= -->
+<section class="container py-5">
+    <h3 class="text-center mb-4">Best Sellers</h3>
+
+    <div class="row g-4">
+        {% for product in products %}
+        <div class="col-md-3">
+            <div class="card h-100 shadow-sm">
+                <img src="{{ product.image.url }}" style="height:200px; object-fit:cover;">
+                <div class="card-body text-center">
+                    <small>{{ product.name }}</small>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <script>
+        new Swiper(".heroSwiper", {
+            loop: true,              // infinite
+            autoplay: {
+                delay: 2500,         // speed
+                disableOnInteraction: false,
+            },
+            speed: 900,              // smoothness
+            slidesPerView: 1,
+        });
+    </script>
+
+
+
+    <!-- ================= FOOTER ================= -->
+    <section class="bg-dark text-white text-center py-4">
+        <p class="mb-0">© 2026 Fashionam • Made with ❤️ All Rights Reserved</p>
+    </section>
+
+
+
+    {% endblock %}

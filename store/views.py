@@ -1,9 +1,11 @@
 
+from urllib import request
+
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from store.models import Product
-
+from django.db.models import Q
 
 @login_required(login_url='login')
 def home(request):
@@ -102,8 +104,19 @@ def remove_from_cart(request, product_id):
     request.session['cart'] = cart
     return redirect('cart')
 
-def search(request):
-    query = request.GET.get('q', '')
+def search_view(request):
+    query = request.GET.get('q')
+    products = []
+
+    if query:
+        products = Product.objects.filter(
+            Q(name__icontains=query) |
+            Q(description__icontains=query)
+        )
+
     return render(request, 'store/search.html', {
+        'products': products,
         'query': query
     })
+def add_to_wishlist(request, id):
+    return redirect('home')

@@ -13,7 +13,8 @@ urlpatterns = [
     path('remove-from-cart/<int:product_id>/', views.remove_from_cart, name='remove_from_cart'),
     path('cart/increase/<int:product_id>/', views.increase_cart, name='increase_cart'),
     path('cart/decrease/<int:product_id>/', views.decrease_cart, name='decrease_cart'),
-   path('search/', views.search, name='search'),
+    path('wishlist/add/<int:id>/', views.add_to_wishlist, name='add_to_wishlist'),
+    path('search/', views.search_view, name='search'),
 ]
 
 if settings.DEBUG:

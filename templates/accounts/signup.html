@@ -1,15 +1,20 @@
 {% extends "base.html" %}
+{% load static %}
+{% load socialaccount %}
 {% block body_class %}no-navbar{% endblock %}
+
 {% block content %}
 
 <div class="d-flex justify-content-center align-items-center" style="min-height:85vh">
   <div class="card shadow p-4" style="width:380px">
+
     <h4 class="text-center mb-3">Signup</h4>
 
     {% for message in messages %}
       <div class="alert alert-danger">{{ message }}</div>
     {% endfor %}
 
+    <!-- Signup form -->
     <form method="post">
       {% csrf_token %}
 
@@ -33,13 +38,30 @@
         <label>Confirm Password</label>
       </div>
 
-      <button class="btn btn-primary w-100">Signup</button>
+      <button class="btn btn-dark w-100">Signup</button>
     </form>
 
+    <!-- OR divider -->
+    <div class="text-center my-3 text-muted">OR</div>
+
+    <!-- Google Signup -->
+    <a href="{% provider_login_url 'google' process='signup' %}" class="google-login-btn">
+      <img src="https://developers.google.com/identity/images/g-logo.png">
+      <span>Signup with Google</span>
+    </a>
+
     <p class="text-center mt-3 mb-0">
-      Already have an account? <a href="{% url 'login' %}">Login</a>
+      Already have an account?
+      <a href="{% url 'login' %}">Login</a>
     </p>
+
   </div>
 </div>
 
 {% endblock %}
+<script>
+  function togglePassword() {
+    const passwordInput = document.getElementById('password');
+    const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+    passwordInput.setAttribute('type', type);
+  }
